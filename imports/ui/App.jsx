@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import { createContainer } from 'meteor/react-meteor-data';
 
 import { Tasks } from '../api/tasks.js';
+import { TempReadings } from '../api/tasks.js';
 
 // App component - represents the whole app
 class App extends Component {
@@ -58,25 +59,32 @@ class App extends Component {
         return (
             <div className="container">
                 <header>
-                    <h1>Todo List</h1>
+                    <h1>Temp Readings</h1>
+                    <ul>
+                        {this.props.tempReadings.map((temp, i) => {
+                            return (<li key={`temp_${i}`}>{`${temp.temp} - ${temp.time}`}</li>)
+                        })
+                        }
+                    </ul>
 
-                    <label className="hide-completed">
-                        <input
-                            type="checkbox"
-                            readOnly
-                            checked={this.state.hideCompleted}
-                            onClick={this.toggleHideCompleted.bind(this)}
-                        />
-                        Hide Completed Tasks
-                    </label>
 
-                    <form className="new-task" onSubmit={this.handleSubmit.bind(this)} >
-                        <input
-                            type="text"
-                            ref="textInput"
-                            placeholder="Type to add new tasks"
-                        />
-                    </form>
+                    {/*<label className="hide-completed">*/}
+                        {/*<input*/}
+                            {/*type="checkbox"*/}
+                            {/*readOnly*/}
+                            {/*checked={this.state.hideCompleted}*/}
+                            {/*onClick={this.toggleHideCompleted.bind(this)}*/}
+                        {/*/>*/}
+                        {/*Hide Completed Tasks*/}
+                    {/*</label>*/}
+
+                    {/*<form className="new-task" onSubmit={this.handleSubmit.bind(this)} >*/}
+                        {/*<input*/}
+                            {/*type="text"*/}
+                            {/*ref="textInput"*/}
+                            {/*placeholder="Type to add new tasks"*/}
+                        {/*/>*/}
+                    {/*</form>*/}
                 </header>
 
                 <ul>
@@ -93,8 +101,10 @@ App.propTypes = {
 
 export default createContainer(() => {
     Meteor.subscribe('tasks');
+    Meteor.subscribe('tempReadings');
     return {
         tasks: Tasks.find({}, { sort: { createdAt: -1 } }).fetch(),
         incompleteCount: Tasks.find({ checked: { $ne: true } }).count(),
+        tempReadings: TempReadings.find({}, { sort: {time: -1}, limit: 10}).fetch(),
     };
 }, App);

@@ -3,12 +3,17 @@ import { Mongo } from 'meteor/mongo';
 import { check } from 'meteor/check';
 
 export const Tasks = new Mongo.Collection('tasks');
+export const TempReadings = new Mongo.Collection('tempReadings');
+
 
 if (Meteor.isServer) {
     // This code only runs on the server
     Meteor.publish('tasks', function tasksPublication() {
         return Tasks.find();
     });
+    Meteor.publish('tempReadings', function tempReadingsPub() {
+        return TempReadings.find();
+    })
 }
 
 Meteor.methods({
