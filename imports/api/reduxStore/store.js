@@ -1,24 +1,18 @@
-import { createStore, compose } from 'redux';
-//import { syncHistoryWithStore } from 'react-router-redux';
-//import { browserHistory } from 'react-router';
-
-// import the root reducer
+import { createStore } from 'redux';
 import rootReducer from '../reducers/index';
+// import myFakeData from '../data/fakeData.js';  // Default Data
 
-// Default Data
-//import comments from '../data/comments';
-import myFakeData from '../../startup/client/getData.js';
+// create an object for the default data
 
-//create an object for the default data
-const defaultState = {
-    tempReadings: myFakeData,
-};
+// Get Data from API Here???
+// const defaultState = {
+//     tempReadings: myFakeData,
+// };
+
+// ...or just create an empty default state???
+const defaultState = {};
 
 //const store = createStore(rootReducer, defaultState);
 const store = createStore(rootReducer, defaultState);
-
-console.log('store', store);
-
-//export const history = syncHistoryWithStore(browserHistory, store);
 
 export default store;

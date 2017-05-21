@@ -5,6 +5,8 @@ import comments from './comments.js';
 
 // List all reducers here
 const rootReducer = combineReducers({
-    tempReadings, comments});
+    tempReadings,
+    comments
+});
 
 export default rootReducer;

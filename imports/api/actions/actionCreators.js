@@ -1,17 +1,16 @@
 // Good practice would be to put each of these in their own file
 
-
-// increment
-export function increment(index) {
+// Add Temp Data
+export function addFetchedTempData(data) {
+    console.log('dispatching addFetchedTempData');
     return {
-        type: 'INCREMENT_LIKES',
-        index,
-    };
+        type: 'ADD_FETCHED_DATA',
+        data,
+    }
 }
 
 // add comment
 export function addComment(postId, author, comment) {
-    console.log('dispatching addComment action')
     return {
         type: 'ADD_COMMENT',
         postId,
