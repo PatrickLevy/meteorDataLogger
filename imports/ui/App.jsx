@@ -1,30 +1,37 @@
-import React, { Component, PropTypes } from 'react';
-import { createContainer } from 'meteor/react-meteor-data';
-import { TempReadings } from '../api/collections.js';
-import TempList from './TempList.jsx';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import * as actionCreators from '../api/actions/actionCreators.js';
+import AppMain from './App-Main.jsx';
+import store from '../api/reduxStore/store.js';
 
-// App component - represents the whole app
-class App extends Component {
-
-    render() {
-        return (
-            <div className="container">
-                <header>
-                    <h1>Temperature Readings</h1>
-                    <TempList tempReadings={this.props.tempReadings}/>
-                </header>
-            </div>
-        );
-    }
+// This will give us access to our state as props
+function mapStateToProps(state) {
+    return {
+        tempReadings: state.tempReadings,
+        posts: state.posts,
+        comments: state.comments,
+    };
 }
 
-App.propTypes = {
-    tempReadings: PropTypes.array.isRequired,
-};
+// This will give us access to our action creators as props
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators(actionCreators, dispatch);
+}
 
-export default createContainer(() => {
-    Meteor.subscribe('tempReadings');
-    return {
-        tempReadings: TempReadings.find({}, { sort: {time: -1}, limit: 10}).fetch(),
-    };
-}, App);
+// This will open the Main component with the state and action
+// creators mapped to props
+// connect will inject the data so that we don't have to pass
+// it down via props many layers
+const ConnectedApp = connect(mapStateToProps, mapDispatchToProps)(AppMain);
+
+// Create the App component that can be imported and rendered to the root element
+const App = (
+    <Provider store={store}>
+        <ConnectedApp />
+    </Provider>
+);
+
+export default App;
+
