@@ -1,5 +1,4 @@
 node_modules/
 .idea/
-instructions-dont-commit.js
 settings.json
 start.sh
