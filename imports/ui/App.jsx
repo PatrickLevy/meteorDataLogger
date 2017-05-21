@@ -10,7 +10,7 @@ class App extends Component {
         return (
             <div className="container">
                 <header>
-                    <h1>Temp Readings</h1>
+                    <h1>Temperature Readings</h1>
                     <TempList tempReadings={this.props.tempReadings}/>
                 </header>
             </div>
