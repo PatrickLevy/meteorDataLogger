@@ -8,6 +8,11 @@ function comments(state = [], action) {
                 ...state.slice(i + 1), // after the one we are updating
             ];
             break;
+        case 'ADD_FETCHED_DATA' :
+            console.log('dispatching ADD_FETCHED_DATA from comments');
+            return [
+                ...state
+            ];
         // return the updated state
         default:
             return state;

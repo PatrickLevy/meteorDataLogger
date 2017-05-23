@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { createContainer } from 'meteor/react-meteor-data';
+import { HTTP } from 'meteor/http'
+//import { createContainer } from 'meteor/react-meteor-data';
 // Don't need this anymore...
 // import { TempReadings } from '../api/collections/collections.js';
 import TempList from './TempList.jsx';
@@ -15,12 +16,21 @@ class AppMain extends Component {
         // get data from API - is this the best place to do this?
         const fakeAPIData = getDataFromFakeAPI();
 
+        HTTP.call('GET', 'http://localhost:3001/tempData', {
+            data: { some: 'json', stuff: 1 }
+        }, (error, result) => {
+            if (!error) {
+                console.log('result', result);
+                this.props.addFetchedTempData(result.data);
+            }
+        });
+
         // Put data from API call into redux store...here's what happens:
         // 1. Calling this.props.addFetchedTempData() will dispatch an action (see actionCreators.js)
         // 2. The action will in turn fire the reducers and the one with the matching action.type will handle it (see tempReadings.js)
         // 3. Because the state (with redux store) has been mapped to props, we can access via props
 
-        this.props.addFetchedTempData(fakeAPIData);
+        //this.props.addFetchedTempData(fakeAPIData);
     }
     render() {
         return (
