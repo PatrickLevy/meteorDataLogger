@@ -58,7 +58,8 @@ class TempChart extends Component {
         console.log('probeData', probeSeries);
         this.chart = Highcharts.chart(this.props.probeId, {
             chart: {
-                type: 'line'
+                type: 'line',
+                height: 1000,
             },
             credits: {
                 enabled: false
