@@ -7,7 +7,7 @@ export default class TempList extends Component {
             <ul>
                 {
                     this.props.tempReadings.map((temp, i) => {
-                        return (<li key={`temp_${i}`}>{`${temp.temp} - ${temp.time}`}</li>)
+                        return (<li key={`temp_${i}`}>{` - ${temp.time}`}</li>)
                     })
                 }
             </ul>
