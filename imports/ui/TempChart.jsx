@@ -104,11 +104,11 @@ class TempChart extends Component {
     render() {
         console.log('this.props', this.props);
         return (
-            <div className="container">
-                <header>
+            <div className="highcharts-chart">
+
                     <div id={this.props.probeId}></div>
 
-                </header>
+
             </div>
         );
     }

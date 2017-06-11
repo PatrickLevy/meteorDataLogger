@@ -18,9 +18,11 @@ class AppMain extends Component {
                 <div className="container">
                     <header>
                         <h1>Probe Readings</h1>
+                    </header>
+
                         {/*<TempList tempReadings={this.props.tempReadings}/>*/}
                         <TempChart probeId="PROBE_01" data={this.props.tempReadings} allProbeSettings={this.props.allProbeSettings}/>
-                    </header>
+
                 </div>
             );
         }
