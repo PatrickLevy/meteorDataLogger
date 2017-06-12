@@ -100,9 +100,11 @@ class TempChart extends Component {
                     text: 'Date'
                 },
                 labels: {
-                    format: '{value:%Y-%m-%d}',
-                    rotation: 45,
-                    align: 'left'
+                    // format: '{value:%Y-%m-%d}',
+                    formatter: function() {
+                        return moment(this.value).format("MM-DD-YYYY, h:mm a");
+                    }
+
                 }
             },
             yAxis: {
