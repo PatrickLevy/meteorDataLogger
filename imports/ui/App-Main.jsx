@@ -10,6 +10,15 @@ import getDataFromFakeAPI from '../api/data/fakeData.js';
 
 // App component - represents the whole app
 class AppMain extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            selectedGroupId: 'GROUP_01',
+        };
+    }
+    setSelectedGroupId(selectedGroupId) {
+        this.setState({ selectedGroupId });
+    }
 
     render() {
         console.log('this.props', this.props);
@@ -18,10 +27,31 @@ class AppMain extends Component {
                 <div className="container">
                     <header>
                         <h1>Probe Readings</h1>
+                        <div>
+                            {
+                                this.props.allProbeSettings.groups.map(group => {
+                                    return (
+                                        <button
+                                            className="btn btn-success"
+                                            onClick={() => this.setSelectedGroupId(group.groupId)}
+                                        >
+                                            {group.name}
+                                        </button>
+                                    )
+                                })
+                            }
+
+                        </div>
+
                     </header>
 
                         {/*<TempList tempReadings={this.props.tempReadings}/>*/}
-                        <TempChart probeId="PROBE_01" data={this.props.tempReadings} allProbeSettings={this.props.allProbeSettings}/>
+                        <TempChart
+                            probeId="PROBE_01"
+                            data={this.props.tempReadings}
+                            allProbeSettings={this.props.allProbeSettings}
+                            selectedGroupId={this.state.selectedGroupId}
+                        />
 
                 </div>
             );

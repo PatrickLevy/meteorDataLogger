@@ -11,7 +11,7 @@ function getDataForProbe(dataFromDb, probeId) {
     return dataFromDb.map(d => {return {x: d.time, y: d.data.find(pd => pd.probeId === probeId).value}});
 }
 
-function getAllSeries(dataFromDb, probeIds, allProbeSettings) {
+function getAllSeries(dataFromDb, allProbeSettings, selectedGroupId = 'GROUP_01') {
 
     // return probeIds.map((probeId) => {
     //     const settingsForProbe = allProbeSettings.probes.find(probeSettings => probeSettings.probeId === probeId);
@@ -21,9 +21,17 @@ function getAllSeries(dataFromDb, probeIds, allProbeSettings) {
 
     return allProbeSettings.probes.map((probeSettings) => {
         //const settingsForProbe = allProbeSettings.probes.find(probeSettings => probeSettings.probeId === probeId);
+        console.log('selectedGroupId', selectedGroupId);
+        console.log('allProbeSettings', allProbeSettings);
+        console.log('probeSettings', probeSettings);
+
         if (probeSettings.enabled) {
             const name = probeSettings.name || probeId;
-            return {name, data: getDataForProbe(dataFromDb, probeSettings.probeId)}
+            return {
+                name,
+                data: getDataForProbe(dataFromDb, probeSettings.probeId),
+                visible: allProbeSettings.groups.find(group => group.groupId === selectedGroupId).probes.includes(probeSettings.probeId),
+            }
         }
 
     });
@@ -31,8 +39,18 @@ function getAllSeries(dataFromDb, probeIds, allProbeSettings) {
 
 // App component - represents the whole app
 class TempChart extends Component {
+    // constructor(props) {
+    //     super(props);
+    //     this.state = {
+    //         selectedGroupId: 'GROUP_02',
+    //     };
+    // }
+
 
     componentDidMount() {
+        this.updateChart();
+    }
+    componentDidUpdate() {
         this.updateChart();
     }
     componentWillUnmount() {
@@ -44,22 +62,29 @@ class TempChart extends Component {
 
         // Get just the data for one probe
         //const probeData = this.props.data.map(d => {return {x: d.time, y: d.data.find(pd => pd.probeId === this.props.probeId).value}});
-        const probeSeries = {
-            name: this.props.probeId,
-            data: getDataForProbe(this.props.data, this.props.probeId),
-        };
+        // const probeSeries = {
+        //     name: this.props.probeId,
+        //     data: getDataForProbe(this.props.data, this.props.probeId),
+        //     visible: false
+        // };
 
-        const allSeriesData = getAllSeries(this.props.data, ['PROBE_01', 'PROBE_02'], this.props.allProbeSettings);
+        const allSeriesData = getAllSeries(this.props.data, this.props.allProbeSettings, this.props.selectedGroupId);
         console.log('allSeriesData', allSeriesData);
+
+        // TODO - Caluculate temp difference between DHW Out and DHW In
+
+        // TODO - Providd user default tabs or buttons for viewing grouping.
+
+        // TODO - Email alarms when failure of boiler or thresholds
 
         // Get data for all probes
         //const probeData = this.props.data.map(d => {return {x: d.time, y: d.data.find(pd => pd.probeId === this.props.probeId).value}});
 
-        console.log('probeData', probeSeries);
+        // console.log('probeData', probeSeries);
         this.chart = Highcharts.chart(this.props.probeId, {
             chart: {
-                type: 'line',
-                height: 1000,
+                type: 'column',
+                height: 600,
             },
             credits: {
                 enabled: false
@@ -73,6 +98,11 @@ class TempChart extends Component {
             xAxis: {
                 title: {
                     text: 'Date'
+                },
+                labels: {
+                    format: '{value:%Y-%m-%d}',
+                    rotation: 45,
+                    align: 'left'
                 }
             },
             yAxis: {
@@ -96,6 +126,13 @@ class TempChart extends Component {
                 // [probeSeries],
                 allSeriesData,
                 //probeData,
+            plotOptions: {
+                column: {
+                    dataLabels: {
+                        enabled: true,
+                    }
+                }
+            },
         });
 
 
