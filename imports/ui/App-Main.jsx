@@ -73,7 +73,7 @@ export default createContainer(() => {
     const settingsSub = Meteor.subscribe('settings');
     const loading = !tempReadingSub.ready() || !settingsSub.ready();
     return {
-        tempReadings: TempReadings.find({}, { sort: {time: 1}, limit: 10}).fetch(),
+        tempReadings: TempReadings.find({}, { sort: {time: -1}, limit: 10}).fetch(),
         allProbeSettings: Settings.findOne(),
         loading,
     };
