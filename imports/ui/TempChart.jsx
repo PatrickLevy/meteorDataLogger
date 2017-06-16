@@ -8,7 +8,7 @@ import { createContainer } from 'meteor/react-meteor-data';
 
 
 function getDataForProbe(dataFromDb, probeId) {
-    return dataFromDb.map(d => {return {x: d.time, y: d.data.find(pd => pd.probeId === probeId).value}});
+    return dataFromDb.map(d => {return {x: d.time, y: d.data.find(pd => pd.probeId === probeId).value}}).reverse();
 }
 
 function getAllSeries(dataFromDb, allProbeSettings, selectedGroupId = 'GROUP_01') {

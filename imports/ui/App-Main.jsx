@@ -24,7 +24,7 @@ class AppMain extends Component {
         console.log('this.props', this.props);
         if (!this.props.loading) {
             return (
-                <div className="container">
+                <div>
                     <header>
                         <h1>Probe Readings</h1>
                         <div>
